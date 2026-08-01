@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}PeerBook{% endblock %}</title>
+  <style>
+    :root {
+      --bg1:#121212; --bg2:#1e1e1e; --text:#E5E7EB; --muted:#9CA3AF;
+      --accent:#F25F4C; --accent-hover:#ff725e; --error:#ff4c4c; --card:#1e1e1e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text); background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      min-height: 100vh; display: flex; flex-direction: column;
+    }
+    .nav {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:14px 22px; background:#151515; border-bottom:1px solid #222;
+      position: sticky; top: 0; z-index: 10;
+    }
+    .brand a { color: var(--accent); font-weight:700; text-decoration:none; font-size:1.1rem; }
+    .nav a { color: var(--text); text-decoration:none; margin-left:14px; }
+    .nav a.btn {
+      padding:8px 14px; border-radius:10px; background:var(--accent);
+      color:#fff; font-weight:600; position:relative; overflow:hidden;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .nav a.btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+    .wrap { flex:1; display:flex; align-items:center; justify-content:center; padding:40px 16px; }
+    .card {
+      width:100%; max-width: 500px; background:var(--card); border-radius:16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.5); padding:34px;
+      opacity:0; transform: translateY(40px); animation: fadeInUp .7s ease forwards;
+    }
+    @keyframes fadeInUp { to { opacity:1; transform:translateY(0);} }
+    h1,h2 { color: var(--accent); margin: 0 0 14px; }
+    p.muted { color: var(--muted); margin-top: 0; }
+    form { display:flex; flex-direction:column; gap:14px; }
+    label { color: var(--muted); font-size:.9rem; }
+    input {
+      padding:12px; border-radius:10px; border:1px solid #343434; background:#2a2a2a; color:#fff;
+      outline:none; transition:border .2s ease, box-shadow .2s ease;
+    }
+    input:focus { border:1px solid var(--accent); box-shadow:0 0 8px rgba(242,95,76,.6); }
+    button {
+      padding:12px; border:none; border-radius:10px; background:var(--accent); color:#fff;
+      font-weight:700; cursor:pointer; position:relative; overflow:hidden;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    button:hover { background:var(--accent-hover); transform:translateY(-2px); box-shadow:0 8px 18px rgba(242,95,76,.45); }
+    button::after {
+      content:""; position:absolute; top:0; left:-75%; width:50%; height:100%;
+      background: rgba(255,255,255,.18); transform:skewX(-20deg); transition:.7s;
+    }
+    button:hover::after { left:125%; }
+
+    /* Messages */
+    .messages { position: fixed; top: 70px; left: 50%; transform: translateX(-50%); width: min(520px, 92vw); z-index: 50; }
+    .msg {
+      margin:10px 0; padding:12px 14px; border-radius:12px; background:#222; border:1px solid #333;
+      animation: fadeInUp .4s ease forwards;
+    }
+    .msg.info    { border-color:#3a3a3a; }
+    .msg.success { border-color:#1f7a42; background: #133021; }
+    .msg.error   { border-color:#7a1f1f; background: #301313; }
+    .msg.warning { border-color:#7a6a1f; background: #302813; }
+    .footer { text-align:center; color:#6B7280; padding: 24px 12px; }
+    /* Autofill fix */
+    input:-webkit-autofill { -webkit-box-shadow: 0 0 0 1000px #2a2a2a inset !important; -webkit-text-fill-color: #E5E7EB !important; }
+    input:-webkit-autofill:focus { -webkit-box-shadow: 0 0 0 1000px #2a2a2a inset !important; }
+  </style>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <nav class="nav">
+    <div class="brand"><a href="{% url 'landing' %}">PeerBook</a></div>
+    <div>
+      {% if user.is_authenticated %}
+        <a href="{% url 'dashboard' %}">Dashboard</a>
+        <a href="{% url 'logout' %}" class="btn" style="margin-left:10px;">Logout</a>
+      {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'signup' %}" class="btn" style="margin-left:10px;">Sign Up</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <div class="messages">
+    {% for message in messages %}
+      <div class="msg {{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  </div>
+
+  <main class="wrap">
+    {% block content %}{% endblock %}
+  </main>
+
+  <div class="footer">© 2025 PeerBook. All rights reserved.</div>
+</body>
+</html>

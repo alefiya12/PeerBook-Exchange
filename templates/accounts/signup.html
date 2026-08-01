@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Sign Up | PeerBook{% endblock %}
+{% block content %}
+  <div class="card" style="max-width:520px;">
+    <h2>Create Your Account</h2>
+    <p class="muted">Join the campus exchange. It’s free and takes under a minute.</p>
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% if form.non_field_errors %}
+        <div class="msg error">{{ form.non_field_errors|join:", " }}</div>
+      {% endif %}
+
+      <div>
+        <label for="{{ form.username.id_for_label }}">Username</label>
+        {{ form.username }}
+        {% for e in form.username.errors %}<div class="msg error" style="margin-top:6px;">{{ e }}</div>{% endfor %}
+      </div>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px;">
+        <div>
+          <label for="{{ form.first_name.id_for_label }}">First Name</label>
+          {{ form.first_name }}
+          {% for e in form.first_name.errors %}<div class="msg error" style="margin-top:6px;">{{ e }}</div>{% endfor %}
+        </div>
+        <div>
+          <label for="{{ form.last_name.id_for_label }}">Last Name</label>
+          {{ form.last_name }}
+          {% for e in form.last_name.errors %}<div class="msg error" style="margin-top:6px;">{{ e }}</div>{% endfor %}
+        </div>
+      </div>
+
+      <div>
+        <label for="{{ form.email.id_for_label }}">Email</label>
+        {{ form.email }}
+        {% for e in form.email.errors %}<div class="msg error" style="margin-top:6px;">{{ e }}</div>{% endfor %}
+      </div>
+
+      <div>
+        <label for="{{ form.password1.id_for_label }}">Password</label>
+        {{ form.password1 }}
+        {% for e in form.password1.errors %}<div class="msg error" style="margin-top:6px;">{{ e }}</div>{% endfor %}
+        <p class="muted" style="margin:6px 0 0 2px;">Must be at least 8 characters.</p>
+      </div>
+
+      <div>
+        <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+        {{ form.password2 }}
+        {% for e in form.password2.errors %}<div class="msg error" style="margin-top:6px;">{{ e }}</div>{% endfor %}
+      </div>
+
+      <button type="submit">Create Account</button>
+    </form>
+
+    <p class="muted" style="margin-top:12px;">Already have an account? <a href="{% url 'login' %}" style="color:var(--accent); text-decoration:none;">Sign In</a></p>
+  </div>
+{% endblock %}

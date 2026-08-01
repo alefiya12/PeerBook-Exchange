@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg p-4" style="max-width: 600px; margin: auto; background-color: #1E1E1E; color: white; border: 1px solid #F25F4C;">
+        <h2 class="text-center" style="color: #F25F4C;">User Profile</h2>
+        <hr style="border-color:#F25F4C;">
+        <p><b>Username:</b> {{ user.username }}</p>
+        <p><b>First Name:</b> {{ user.first_name }}</p>
+        <p><b>Last Name:</b> {{ user.last_name }}</p>
+        <p><b>Email:</b> {{ user.email }}</p>
+        <div class="text-center mt-3">
+            <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
